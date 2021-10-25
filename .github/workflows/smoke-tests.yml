@@ -27,14 +27,16 @@ jobs:
 
       - name: Run tests
         env:
-          # SENTRY_SMOKE_USER: ${{ secrets.SENTRY_SMOKE_USER }}
-          # SENTRY_SMOKE_PASSWORD: ${{ secrets.SENTRY_SMOKE_PASSWORD }}
+          SENTRY_SMOKE_USER: ${{ secrets.SENTRY_SMOKE_USER }}
+          SENTRY_SMOKE_PASSWORD: ${{ secrets.SENTRY_SMOKE_PASSWORD }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: npm test
 
       # This may cause double reporting if assertions in `sentryio.spec.ts` fail,
       # but we want to capture errors that happen outside of the test file itself
       # where the Sentry SDK is initialized.
+      #
+      # TODO: Send some better logs to Sentry
       - name: Report CI to Sentry
         if: failure()
         env:
