@@ -27,5 +27,7 @@ jobs:
 
       - name: Run tests
         env:
-          SENTRY_DSN: ${{secrets.SENTRY_DSN}}
+          SENTRY_SMOKE_USER: ${{ secrets.SENTRY_SMOKE_USER }}
+          SENTRY_SMOKE_PASSWORD: ${{ secrets.SENTRY_SMOKE_PASSWORD }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: npm test
