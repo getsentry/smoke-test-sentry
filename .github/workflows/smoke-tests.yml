@@ -40,4 +40,5 @@ jobs:
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
-          npx @sentry/cli send-event -m "smoke test ci job failed"
+          npm install @sentry/cli
+          sentry-cli send-event -m "smoke test ci job failed"
