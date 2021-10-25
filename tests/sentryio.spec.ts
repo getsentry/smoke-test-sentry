@@ -55,11 +55,22 @@ test('sentryio', async ({page}) => {
     await page.click('text=Login with Google');
     await page.waitForURL('https://accounts.google.com/**/*');
 
+    // Go back to login
+    await page.goto('https://sentry.io/auth/login/');
+
+    // Login with smoke test account
+    await page.fill('[name="username"]', process.env.SENTRY_SMOKE_USER);
+    await page.fill('[name="password"]', process.env.SENTRY_SMOKE_PASSWORD);
+    await page.click('button[type="submit"] >> text=Continue');
+
+    await expect(page.locator('h1 >> text=Issues').first()).toBeVisible();
+
     // Close page
     await page.close();
     span.setStatus(Tracing.SpanStatus.Ok);
   } catch (err) {
     span.setStatus(Tracing.SpanStatus.InternalError);
+    Sentry.captureException(err);
     throw err;
   } finally {
     span.finish();
