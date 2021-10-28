@@ -32,9 +32,10 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: npm test
 
-      # This may cause double reporting if assertions in `sentryio.spec.ts` fail,
-      # but we want to capture errors that happen outside of the test file itself
-      # where the Sentry SDK is initialized.
+      # This may cause double reporting if assertions in `sentryio.spec.ts`
+      # fail, but we want to capture errors that happen outside of the test
+      # file itself where the Sentry SDK is initialized. Reports to
+      # https://sentry.io/organizations/sentry/issues/?project=5992455
       #
       # TODO: Send some better logs to Sentry
       - name: Report CI to Sentry
@@ -43,4 +44,4 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
           curl -sL https://sentry.io/get-cli/ | bash
-          sentry-cli send-event -m "smoke test ci job failed"
+          sentry-cli send-event -m "smoke test ci job failed (look at https://github.com/getsentry/smoke-test-sentry/actions)"
