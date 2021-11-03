@@ -25,6 +25,8 @@ jobs:
       # This is needed otherwise will error if playwright is updated
       - run: npx playwright install
 
+      - run: mkdir .artifacts
+
       - name: Run tests
         env:
           SENTRY_SMOKE_USER: ${{ secrets.SENTRY_SMOKE_USER }}
@@ -45,3 +47,11 @@ jobs:
         run: |
           curl -sL https://sentry.io/get-cli/ | bash
           sentry-cli send-event -m "smoke test ci job failed (look at https://github.com/getsentry/smoke-test-sentry/actions)"
+
+      # Upload artifacts to GHA only on failures, as we don't care if it passes
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: screenshots
+          path: .artifacts
+          retention-days: 7

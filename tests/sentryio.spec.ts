@@ -3,6 +3,10 @@ import {test, expect} from '@playwright/test';
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 
+function getArtifactPath(name: string) {
+  return `.artifacts/${name}-${process.env.BROWSER}.png`;
+}
+
 test.beforeAll(() => {
   if (!process.env.SENTRY_DSN) {
     return;
@@ -51,8 +55,11 @@ test('sentryio', async ({page}) => {
     await page.click('#sso >> text=Continue');
     expect(page.url()).toBe('https://sentry.io/auth/login/sentry/');
 
+    await page.screenshot({ path: getArtifactPath('beforeGoogleLogin')});
+
     // Click text=Login with Google
     await page.click('text=Login with Google');
+    await page.screenshot({ path: getArtifactPath('afterClickGoogleLogin')});
     await page.waitForURL('https://accounts.google.com/**/*');
 
     // Go back to login
@@ -63,6 +70,8 @@ test('sentryio', async ({page}) => {
     await page.fill('[name="password"]', process.env.SENTRY_SMOKE_PASSWORD);
     await page.click('button[type="submit"] >> text=Continue');
 
+
+    await page.screenshot({ path: getArtifactPath('afterLogin')});
     await expect(page.locator('h1 >> text=Issues').first()).toBeVisible();
 
     // Close page
