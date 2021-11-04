@@ -2,9 +2,9 @@
 import { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
-  // retries: 1,
+  retries: 3,
   use: {
-    trace: 'retain-on-failure',
+    trace: 'on-first-retry',
   },
 };
 export default config;
