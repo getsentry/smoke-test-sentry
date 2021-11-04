@@ -28,3 +28,4 @@ docs. They have many tools to aid in writing, generating, and debugging tests
 [debug](https://playwright.dev/docs/debug))
 
 ## Flakiness
+If you are trying to debug some intermittent issues with the tests, we use GHA to save a trace when a smoke test run fails. Navigate to a failed job and download the trace artifact. You can then run `npx playwright show-trace trace.zip` (https://playwright.dev/docs/trace-viewer#viewing-the-trace) to open the trace to debug.
