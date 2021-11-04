@@ -53,7 +53,7 @@ test('sentryio', async ({page}) => {
 
     // Click text=Login with Google
     await page.click('text=Login with Google');
-    await page.waitForURL('https://accounts.google.com/**/*');
+    await page.waitForURL('https://accounts.google.com/**/*', {timeout: 25000});
 
     // Go back to login
     await page.goto('https://sentry.io/auth/login/');
@@ -63,7 +63,7 @@ test('sentryio', async ({page}) => {
     await page.fill('[name="password"]', process.env.SENTRY_SMOKE_PASSWORD);
     await page.click('button[type="submit"] >> text=Continue');
 
-    await expect(page.locator('h1 >> text=Issues').first()).toBeVisible();
+    await expect(page.locator('h1 >> text=Issues', {timeout: 25000}).first()).toBeVisible();
 
     // Close page
     await page.close();
