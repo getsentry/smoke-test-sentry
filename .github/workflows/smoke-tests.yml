@@ -51,5 +51,5 @@ jobs:
         if: failure()
         with:
           name: trace
-          path: trace.zip
+          path: test-results
           retention-days: 7
