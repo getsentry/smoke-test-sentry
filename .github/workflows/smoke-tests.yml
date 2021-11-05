@@ -48,7 +48,7 @@ jobs:
 
       # Upload artifacts to GHA only on failures, as we don't care if it passes
       - uses: actions/upload-artifact@v2
-        if: failure()
+        if: always()
         with:
           name: trace
           path: test-results
