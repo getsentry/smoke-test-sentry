@@ -14,7 +14,7 @@ test.beforeAll(() => {
   });
 });
 
-test('sentryio', async ({page}) => {
+test('sentryio', async ({page}, testInfo) => {
   const transaction = Sentry.startTransaction({
     name: "sentry.io smoke test",
   });
@@ -69,8 +69,11 @@ test('sentryio', async ({page}) => {
     await page.close();
     span.setStatus(Tracing.SpanStatus.Ok);
   } catch (err) {
+    if (testInfo.retry === testInfo.project.retries) {
+      Sentry.captureException(err);
+    }
+
     span.setStatus(Tracing.SpanStatus.InternalError);
-    Sentry.captureException(err);
     throw err;
   } finally {
     span.finish();
